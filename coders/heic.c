@@ -687,7 +687,7 @@ static MagickBooleanType ReadHEICSequenceFrames(const ImageInfo *image_info,
   if (track == (heif_track *) NULL)
     return(MagickFalse);
   error=heif_track_get_image_resolution(track,&track_width,&track_height);
-  if (error.code != 0)
+  if (error.code != heif_error_Ok)
     {
       heif_track_release(track);
       return(MagickFalse);
@@ -738,7 +738,7 @@ static MagickBooleanType ReadHEICSequenceFrames(const ImageInfo *image_info,
       chroma,decode_options);
     if (error.code == heif_error_End_of_sequence)
       break;
-    if (error.code != 0)
+    if (error.code != heif_error_Ok)
       {
         (void) ThrowMagickException(exception,GetMagickModule(),
           CorruptImageError,error.message,"(%d.%d) `%s'",error.code,
