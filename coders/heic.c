@@ -730,6 +730,9 @@ static MagickBooleanType ReadHEICSequenceFrames(const ImageInfo *image_info,
 
     if (AcquireMagickResource(ListLengthResource,scene+1) == MagickFalse)
       {
+        (void) ThrowMagickException(exception,GetMagickModule(),
+          ResourceLimitError,"ListLengthExceedsLimit","`%s'",
+          image_info->filename);
         status=MagickFalse;
         break;
       }
