@@ -966,8 +966,12 @@ static Image *ReadHEICImage(const ImageInfo *image_info,ExceptionInfo *exception
     return(DestroyImageList(image));
   if (ReadBlob(image,sizeof(magic),magic) != sizeof(magic))
     ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
+#if LIBHEIF_NUMERIC_VERSION >= HEIC_COMPUTE_NUMERIC_VERSION(1,18,0)
   error=heif_has_compatible_filetype(magic,sizeof(magic));
   if (error.code != heif_error_Ok)
+#else
+  if (heif_check_filetype(magic,sizeof(magic)) == heif_filetype_no)
+#endif
     ThrowReaderException(CoderError,"ImageTypeNotSupported");
   (void) CloseBlob(image);
 #if LIBHEIF_NUMERIC_VERSION >= HEIC_COMPUTE_NUMERIC_VERSION(1,11,0)
@@ -980,7 +984,7 @@ static Image *ReadHEICImage(const ImageInfo *image_info,ExceptionInfo *exception
   heif_context=heif_context_alloc();
   if (heif_context == (struct heif_context *) NULL)
     ThrowReaderException(ResourceLimitError,"MemoryAllocationFailed");
-#if LIBHEIF_NUMERIC_VERSION >= HEIC_COMPUTE_NUMERIC_VERSION(1,19,0)
+#if LIBHEIF_NUMERIC_VERSION >= HEIC_COMPUTE_NUMERIC_VERSION(1,18,0)
   HEICSecurityLimits(image_info,heif_context);
 #endif
   error=heif_context_read_from_file(heif_context,image->filename,
