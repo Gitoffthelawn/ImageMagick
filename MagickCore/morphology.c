@@ -1323,8 +1323,10 @@ MagickExport KernelInfo *AcquireKernelBuiltIn(const KernelInfoType type,
 
         /* set all kernel values within diamond area to scale given */
         for ( i=0, v=0; v < (ssize_t)kernel->height; v++)
-          { size_t
+          {
+            size_t
               alpha = order_f / ( fact((size_t) v) * fact(kernel->height-(size_t) v-1) );
+
             for ( u=0; u < (ssize_t)kernel->width; u++, i++)
               kernel->positive_range += kernel->values[i] = (double)
                 (alpha * order_f / ( fact((size_t) u) * fact(kernel->height-(size_t) u-1) ));
