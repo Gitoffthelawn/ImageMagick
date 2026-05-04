@@ -696,6 +696,7 @@ static MagickBooleanType ReadHEICSequenceFrames(const ImageInfo *image_info,
   if (timescale == 0)
     timescale=1;
   decode_options=heif_decoding_options_alloc();
+  decode_options->ignore_sequence_editlist=1;
   /*
     Detect alpha from the track and set up chroma format.
   */
