@@ -1967,6 +1967,10 @@ static MagickBooleanType ReadPSDLayersInternal(Image *image,
       image->alpha_trait=BlendPixelTrait;
     }
 
+  if (AcquireMagickResource(ListLengthResource,number_layers) == MagickFalse)
+    ThrowBinaryException(ResourceLimitError,"ListLengthExceedsLimit",
+      image->filename);
+
   /*
     We only need to know if the image has an alpha channel
   */
